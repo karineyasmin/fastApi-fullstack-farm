@@ -19,7 +19,7 @@ async def get_players_list():
     return entity_players_list(players)
 
 
-@player_router.get("/playeres/{player_id}")
+@player_router.get("/players/{player_id}")
 def get_player_by_id(player_id):
     return entity_player(
         connection_db.local.player.find_one({"_id": ObjectId(player_id)})
