@@ -25,7 +25,23 @@ def get_player_by_id(player_id):
         connection_db.local.player.find_one({"_id": ObjectId(player_id)})
     )
 
+
 @player_router.post("/players")
 async def create_player(player: Player):
     connection_db.local.player.insert_one(dict(player))
     return entity_players_list(connection_db.local.jogador.find())
+
+
+@player_router.put("/players/{player_id}")
+async def update_player(player_id, player: Player):
+    connection_db.player.find_one_and_update(
+        {"_id": ObjectId(player_id)}, {"$set": dict(player)}
+    )
+    return entity_player(connection_db.player.find_one({"_id": ObjectId(player_id)}))
+
+
+@player_router.delete("/players/{player_id}")
+async def delete_player(player_id):
+    return entity_player(
+        connection_db.local.player.find_one_and_delete({"_id": ObjectId(player_id)})
+    )
